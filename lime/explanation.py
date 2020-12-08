@@ -150,7 +150,7 @@ class Explanation(object):
         """
         return self.local_exp
 
-    def as_pyplot_figure(self, label=1, **kwargs):
+    def as_pyplot_figure(self, label=1, color_negative="red", color_positive="green", **kwargs):
         """Returns the explanation as a pyplot figure.
 
         Will throw an error if you don't have matplotlib installed
@@ -158,6 +158,8 @@ class Explanation(object):
             label: desired label. If you ask for a label for which an
                    explanation wasn't computed, will throw an exception.
                    Will be ignored for regression explanations.
+            color_negative: The color to use for negative bars
+            color_positive: The color to use for positive bars
             kwargs: keyword arguments, passed to domain_mapper
 
         Returns:
@@ -170,7 +172,7 @@ class Explanation(object):
         names = [x[0] for x in exp]
         vals.reverse()
         names.reverse()
-        colors = ['green' if x > 0 else 'red' for x in vals]
+        colors = [color_positive if x > 0 else color_negative for x in vals]
         pos = np.arange(len(exp)) + .5
         plt.barh(pos, vals, align='center', color=colors)
         plt.yticks(pos, names)
